@@ -24,7 +24,7 @@ func NewClient(apiKey string, options ...OptionFunc) *Client {
 	return c
 }
 
-func withHTTPClient(httpc *http.Client) OptionFunc {
+func WithHTTPClient(httpc *http.Client) OptionFunc {
 	return func(c *Client) {
 		c.HTTPClient = httpc
 	}
