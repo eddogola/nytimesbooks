@@ -1,6 +1,9 @@
 package books
 
-import "net/http"
+import (
+	"context"
+	"net/http"
+)
 
 type Client struct {
 	base       string
@@ -28,4 +31,18 @@ func WithHTTPClient(httpc *http.Client) OptionFunc {
 	return func(c *Client) {
 		c.HTTPClient = httpc
 	}
+}
+
+func (c *Client) Get(ctx context.Context, url string) (*http.Response, error) {
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
+	if err != nil {
+		return nil, err
+	}
+	
+	resp, err := c.HTTPClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	return resp, err
 }
