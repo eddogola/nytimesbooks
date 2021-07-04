@@ -166,3 +166,18 @@ type Overview struct {
 		}
 	} `json:"results"`
 }
+
+type Reviews struct {
+	Status     string `json:"status"`
+	Copyright  string `json:"copyright"`
+	NumResults int    `json:"num_results"`
+	Results    []struct {
+		URL           string   `json:"url"`
+		PublicationDt string   `json:"publication_dt"`
+		ByLine        string   `json:"by_line"`
+		BookTitle     string   `json:"book_title"`
+		BookAuthor    string   `json:"book_author"`
+		Summary       string   `json:"summary"`
+		ISBN13        []string `json:"isbn13"`
+	} `json:"results"`
+}
