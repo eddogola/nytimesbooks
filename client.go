@@ -5,6 +5,10 @@ import (
 	"net/http"
 )
 
+type Doer interface {
+	Do(*http.Request) (*http.Response, error)
+}
+
 type Client struct {
 	base       string
 	apiKey     string
@@ -38,7 +42,7 @@ func (c *Client) Get(ctx context.Context, url string) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
-	
+
 	resp, err := c.HTTPClient.Do(req)
 	if err != nil {
 		return nil, err
