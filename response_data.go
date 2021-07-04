@@ -26,7 +26,7 @@ type List struct {
 			Contributor     string `json:"contributor"`
 			Author          string `json:"author"`
 			ContributorNote string `json:"contributor_note"`
-			Price           int    "price"
+			Price           int    `json:"price"`
 			AgeGroup        string `json:"age_group"`
 			Publisher       string `json:"publisher"`
 			PrimaryISBN13   string `json:"primary_isbn13"`
@@ -63,7 +63,7 @@ type ListByDate struct {
 			PrimaryISBN10      string `json:"primary_isbn10"`
 			Publisher          string `json:"publisher"`
 			Description        string `json:"description"`
-			Price              int    "price"
+			Price              int    `json:"price"`
 			Title              string `json:"title"`
 			Author             string `json:"author"`
 			Contributor        string `json:"contributor"`
@@ -94,7 +94,7 @@ type ListHistory struct {
 		Contributor     string `json:"contributor"`
 		Author          string `json:"author"`
 		ContributorNote string `json:"contributor_note"`
-		Price           int    "price"
+		Price           int    `json:"price"`
 		AgeGroup        string `json:"age_group"`
 		Publisher       string `json:"publisher"`
 		ISBNs           []struct {
@@ -157,7 +157,7 @@ type Overview struct {
 				ContributorNote string `json:"contributor_note"`
 				CreatedDate     string `json:"created_date"`
 				Description     string `json:"description"`
-				Price           int    "price"
+				Price           int    `json:"price"`
 				PrimaryISBN13   string `json:"primary_isbn13"`
 				PrimaryISBN10   string `json:"primary_isbn10"`
 				Publisher       string `json:"publisher"`
