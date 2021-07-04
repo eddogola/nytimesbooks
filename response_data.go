@@ -1,3 +1,5 @@
+package books
+
 type List struct {
 	Status       string `json:"status"`
 	Copyright    string `json:"copyright"`
