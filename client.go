@@ -12,7 +12,7 @@ type Doer interface {
 type Client struct {
 	base       string
 	apiKey     string
-	HTTPClient *http.Client
+	HTTPClient Doer
 }
 
 type OptionFunc func(*Client)
@@ -31,9 +31,9 @@ func NewClient(apiKey string, options ...OptionFunc) *Client {
 	return c
 }
 
-func WithHTTPClient(httpc *http.Client) OptionFunc {
+func WithHTTPClient(doer Doer) OptionFunc {
 	return func(c *Client) {
-		c.HTTPClient = httpc
+		c.HTTPClient = doer
 	}
 }
 
