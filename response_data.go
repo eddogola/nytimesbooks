@@ -121,7 +121,7 @@ type ListHistory struct {
 	} `json:"results"`
 }
 
-type ListNames struct {
+type Names struct {
 	Status     string `json:"status"`
 	Copyright  string `json:"copyright"`
 	NumResults int    `json:"num_results"`
@@ -132,5 +132,37 @@ type ListNames struct {
 		OldestPublishedDate string `json:"oldest_published_date"`
 		NewestPublishedDate string `json:"oldest_published_date"`
 		Updated             string `json:"updated"`
+	} `json:"results"`
+}
+
+type Overview struct {
+	Status     string `json:"status"`
+	Copyright  string `json:"copyright"`
+	NumResults int    `json:"num_results"`
+	Results    []struct {
+		BestsellersDate string `json:"bestsellers_date"`
+		PublishedDate   string `json:"published_date"`
+		Lists           []struct {
+			ListID      int    `json:"list_id"`
+			ListName    string `json:"list_name"`
+			DisplayName string `json:"display_name"`
+			Updated     string `json:"updated"`
+			ListImage   string `json:"list_image"`
+			Books       []struct {
+				AgeGroup        string `json:"age_group"`
+				Author          string `json:"author"`
+				Contributor     string `json:"contributor"`
+				ContributorNote string `json:"contributor_note"`
+				CreatedDate     string `json:"created_date"`
+				Description     string `json:"description"`
+				Price           int    "price"
+				PrimaryISBN13   string `json:"primary_isbn13"`
+				PrimaryISBN10   string `json:"primary_isbn10"`
+				Publisher       string `json:"publisher"`
+				Rank            int    `json:"rank"`
+				Title           string `json:"title"`
+				UpdatedDate     string `json:"updated_date"`
+			} `json:"books"`
+		}
 	} `json:"results"`
 }
