@@ -121,3 +121,16 @@ type ListHistory struct {
 	} `json:"results"`
 }
 
+type ListNames struct {
+	Status     string `json:"status"`
+	Copyright  string `json:"copyright"`
+	NumResults int    `json:"num_results"`
+	Results    []struct {
+		ListName            string `json:"list_name"`
+		DisplayName         string `json:"display_name"`
+		ListNameEncoded     string `json:"list_name_encoded"`
+		OldestPublishedDate string `json:"oldest_published_date"`
+		NewestPublishedDate string `json:"oldest_published_date"`
+		Updated             string `json:"updated"`
+	} `json:"results"`
+}
