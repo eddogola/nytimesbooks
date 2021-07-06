@@ -62,3 +62,21 @@ func (qp QueryParam) String() string {
 
 	return vals.Encode()
 }
+
+func (c *Client) makeLink(endpoint string, qp QueryParam) (string, error) {
+	v := url.Values{}
+	v.Add("api-key", c.apiKey)
+	queryParams := v.Encode()
+	if qp != nil {
+		queryParams += "&" + qp.String()
+	}
+
+	link := c.base + endpoint
+	URL, err := url.ParseRequestURI(link)
+	if err != nil {
+		return "", nil
+	}
+	URL.RawQuery = queryParams
+
+	return URL.String(), nil
+}
