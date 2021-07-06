@@ -238,3 +238,59 @@ func TestGetBestSellersListNames(t *testing.T) {
 		t.Errorf("got %v want %v", got, want)
 	}
 }
+
+func TestGetOverview(t *testing.T) {
+	jsonData := `{  "status": "OK",  "copyright": "Copyright (c) 2019 The New York Times Company.  All Rights Reserved.",  "num_results": 210,  "results": {    "bestsellers_date": "2016-03-05",    "published_date": "2016-03-20",    "lists": [      {        "list_id": 704,        "list_name": "Combined Print and E-Book Fiction",        "display_name": "Combined Print & E-Book Fiction",        "updated": "WEEKLY",        "list_image": "http://du.ec2.nytimes.com.s3.amazonaws.com/prd/books/9780399175954.jpg",        "books": [          {            "age_group": "",            "author": "Clive Cussler and Justin Scott",            "contributor": "by Clive Cussler and Justin Scott",            "contributor_note": "",            "created_date": "2016-03-10 12:00:22",            "description": "In the ninth book in this series, set in 1906, the New York detective Isaac Bell contends with a crime boss passing as a respectable businessman and a tycoon’s plot against President Theodore Roosevelt.",            "price": 0,            "primary_isbn13": "9780698406421",            "primary_isbn10": "0698406427",            "publisher": "Putnam",            "rank": 1,            "title": "THE GANGSTER",            "updated_date": "2016-03-10 17:00:21"          }        ]      }    ]  }}`
+
+	// setup mock http client
+	mc := &MockClient{
+		func(r *http.Request) (*http.Response, error) {
+			body := ioutil.NopCloser(bytes.NewReader([]byte(jsonData)))
+
+			return &http.Response{Body: body}, nil
+		},
+	}
+
+	c := NewClient("apikey", WithHTTPClient(mc))
+	got, err := c.GetOverview(nil)
+	if err != nil {
+		t.Errorf("unexpected error: %v", err)
+	}
+	var want Overview
+	err = json.Unmarshal([]byte(jsonData), &want)
+	if err != nil {
+		t.Errorf("unexpected error: %v", err)
+	}
+	
+	if !reflect.DeepEqual(got, &want) {
+		t.Errorf("got %v want %v", got, want)
+	}
+}
+
+func TestGetReviews(t *testing.T) {
+	jsonData := `{  "status": "OK",  "copyright": "Copyright (c) 2019 The New York Times Company.  All Rights Reserved.",  "num_results": 2,  "results": [    {      "url": "http://www.nytimes.com/2011/11/10/books/1q84-by-haruki-murakami-review.html",      "publication_dt": "2011-11-10",      "byline": "JANET MASLIN",      "book_title": "1Q84",      "book_author": "Haruki Murakami",      "summary": "In “1Q84,” the Japanese novelist Haruki Murakami writes about characters in a Tokyo with two moons.",      "isbn13": [        "9780307476463"      ]    }  ]}`
+
+	// setup mock http client
+	mc := &MockClient{
+		func(r *http.Request) (*http.Response, error) {
+			body := ioutil.NopCloser(bytes.NewReader([]byte(jsonData)))
+
+			return &http.Response{Body: body}, nil
+		},
+	}
+
+	c := NewClient("apikey", WithHTTPClient(mc))
+	got, err := c.GetReviews(nil)
+	if err != nil {
+		t.Errorf("unexpected error: %v", err)
+	}
+	var want Reviews
+	err = json.Unmarshal([]byte(jsonData), &want)
+	if err != nil {
+		t.Errorf("unexpected error: %v", err)
+	}
+	
+	if !reflect.DeepEqual(got, &want) {
+		t.Errorf("got %v want %v", got, want)
+	}
+}
