@@ -149,7 +149,7 @@ func (c *Client) GetBestSellersListHistory(qp QueryParam) (*ListHistory, error) 
 
 // GetBestSellersListNames Gets Best Sellers list names.
 func (c *Client) GetBestSellersListNames() (*Names, error) {
-	URL, err := c.makeLink(HistoryEndpoint, nil)
+	URL, err := c.makeLink(NamesEndpoint, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -166,4 +166,46 @@ func (c *Client) GetBestSellersListNames() (*Names, error) {
 	}
 
 	return &names, err
+}
+
+// GetOverview Gets top 5 books for all the Best Sellers lists for specified date.
+func (c *Client) GetOverview(qp QueryParam) (*Overview, error) {
+	URL, err := c.makeLink(OverviewEndpoint, qp)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := c.get(context.Background(), URL)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	var overview Overview
+	err = json.NewDecoder(resp.Body).Decode(&overview)
+	if err != nil {
+		return nil, err
+	}
+
+	return &overview, err
+}
+
+// GetReviews Gets book reviews.
+func (c *Client) GetReviews(qp QueryParam) (*Reviews, error) {
+	URL, err := c.makeLink(ReviewsEndpoint, qp)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := c.get(context.Background(), URL)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	var reviews Reviews
+	err = json.NewDecoder(resp.Body).Decode(&reviews)
+	if err != nil {
+		return nil, err
+	}
+
+	return &reviews, err
 }
