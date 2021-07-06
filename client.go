@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 	"net/url"
+	"encoding/json"
 )
 
 type Doer interface {
@@ -38,7 +39,7 @@ func WithHTTPClient(doer Doer) OptionFunc {
 	}
 }
 
-func (c *Client) Get(ctx context.Context, url string) (*http.Response, error) {
+func (c *Client) get(ctx context.Context, url string) (*http.Response, error) {
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	if err != nil {
 		return nil, err
@@ -79,4 +80,25 @@ func (c *Client) makeLink(endpoint string, qp QueryParam) (string, error) {
 	URL.RawQuery = queryParams
 
 	return URL.String(), nil
+}
+
+// GetBestSellersList Gets Best Sellers list. If no date is provided returns the latest list.
+func (c *Client) GetBestSellersList(qp QueryParam) (*List, error) {
+	URL, err := c.makeLink(ListsEndpoint, qp)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := c.get(context.Background(), URL)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	var list List
+	err = json.NewDecoder(resp.Body).Decode(&list)
+	if err != nil {
+		return nil, err
+	}
+	
+	return &list, err
 }
