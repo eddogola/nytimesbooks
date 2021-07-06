@@ -3,6 +3,8 @@
 Wrapper around the [New York Times Books API](https://developer.nytimes.com/docs/books-product/1/overview).
 
 [![Go](https://github.com/eddogola/nytimesbooks/actions/workflows/go.yml/badge.svg)](https://github.com/eddogola/nytimesbooks/actions/workflows/go.yml)
+[![Build Status](https://travis-ci.com/eddogola/nytimesbooks.svg?branch=main)](https://travis-ci.com/eddogola/nytimesbooks)
+[![codecov](https://codecov.io/gh/eddogola/nytimesbooks/branch/master/graph/badge.svg?token=dvbOf98a2V)](https://codecov.io/gh/eddogola/nytimesbooks)
 
 ## Installing
 
