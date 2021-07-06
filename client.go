@@ -2,9 +2,10 @@ package books
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/url"
-	"encoding/json"
 )
 
 type Doer interface {
@@ -99,6 +100,29 @@ func (c *Client) GetBestSellersList(qp QueryParam) (*List, error) {
 	if err != nil {
 		return nil, err
 	}
-	
+
 	return &list, err
 }
+
+// GetBestSellersListByDate Gets Best Sellers list by date.
+func (c *Client) GetBestSellersListByDate(date, listName string, qp QueryParam) (*ListByDate, error) {
+	endpoint := fmt.Sprintf(ListsByDateEndpoint, date, listName)
+	URL, err := c.makeLink(endpoint, qp)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := c.get(context.Background(), URL)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	var list ListByDate
+	err = json.NewDecoder(resp.Body).Decode(&list)
+	if err != nil {
+		return nil, err
+	}
+
+	return &list, err
+}
+
