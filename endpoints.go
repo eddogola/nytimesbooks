@@ -5,6 +5,8 @@ const (
 	ListsEndpoint = "/lists.json"
 
 	// ListsByDateEndpoint is the endpoint to Get Best Sellers list by date.
+	// the first placeholder is a date
+	// the second placeholder is the list name
 	ListsByDateEndpoint = "/lists/%v/%v.json"
 
 	// HistoryEndpoint is the endpoint used to Get Best Sellers list history.
