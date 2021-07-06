@@ -3,6 +3,7 @@ package books
 import (
 	"context"
 	"net/http"
+	"net/url"
 )
 
 type Doer interface {
@@ -49,4 +50,15 @@ func (c *Client) Get(ctx context.Context, url string) (*http.Response, error) {
 	}
 
 	return resp, err
+}
+
+type QueryParam map[string]string
+
+func (qp QueryParam) String() string {
+	vals := url.Values{}
+	for key, val := range qp {
+		vals.Add(key, val)
+	}
+
+	return vals.Encode()
 }
