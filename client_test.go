@@ -210,3 +210,31 @@ func TestGetBestSellersListHistory(t *testing.T) {
 		t.Errorf("got %v want %v", got, want)
 	}
 }
+
+func TestGetBestSellersListNames(t *testing.T) {
+	jsonData := `{  "status": "OK",  "copyright": "Copyright (c) 2019 The New York Times Company.  All Rights Reserved.",  "num_results": 53,  "results": [    {      "list_name": "Combined Print and E-Book Fiction",      "display_name": "Combined Print & E-Book Fiction",      "list_name_encoded": "combined-print-and-e-book-fiction",      "oldest_published_date": "2011-02-13",      "newest_published_date": "2016-03-20",      "updated": "WEEKLY"    }  ]}`
+
+	// setup mock http client
+	mc := &MockClient{
+		func(r *http.Request) (*http.Response, error) {
+			body := ioutil.NopCloser(bytes.NewReader([]byte(jsonData)))
+
+			return &http.Response{Body: body}, nil
+		},
+	}
+
+	c := NewClient("apikey", WithHTTPClient(mc))
+	got, err := c.GetBestSellersListNames()
+	if err != nil {
+		t.Errorf("unexpected error: %v", err)
+	}
+	var want Names
+	err = json.Unmarshal([]byte(jsonData), &want)
+	if err != nil {
+		t.Errorf("unexpected error: %v", err)
+	}
+	
+	if !reflect.DeepEqual(got, &want) {
+		t.Errorf("got %v want %v", got, want)
+	}
+}
