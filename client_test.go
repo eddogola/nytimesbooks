@@ -3,6 +3,7 @@ package books
 import (
 	"bytes"
 	"context"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"testing"
@@ -60,5 +61,18 @@ func TestGet(t *testing.T) {
 
 	if want != got {
 		t.Errorf("got %v expected %v", got, want)
+	}
+}
+
+func TestQueryParam(t *testing.T) {
+	qp := make(QueryParam)
+	qp["first"] = "ffs"
+	qp["page"] = "5"
+
+	got := fmt.Sprint(qp)
+	want := "first=ffs&page=5"
+
+	if got != want {
+		t.Errorf("got %v, want %v", got, want)
 	}
 }
