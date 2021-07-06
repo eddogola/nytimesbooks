@@ -126,3 +126,24 @@ func (c *Client) GetBestSellersListByDate(date, listName string, qp QueryParam) 
 	return &list, err
 }
 
+// GetBestSellersListHistory Gets Best Sellers list history.
+func (c *Client) GetBestSellersListHistory(qp QueryParam) (*ListHistory, error) {
+	URL, err := c.makeLink(HistoryEndpoint, qp)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := c.get(context.Background(), URL)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	var hist ListHistory
+	err = json.NewDecoder(resp.Body).Decode(&hist)
+	if err != nil {
+		return nil, err
+	}
+
+	return &hist, err
+}
+
