@@ -141,7 +141,7 @@ type Overview struct {
 	Status     string `json:"status"`
 	Copyright  string `json:"copyright"`
 	NumResults int    `json:"num_results"`
-	Results    []struct {
+	Results    struct {
 		BestsellersDate string `json:"bestsellers_date"`
 		PublishedDate   string `json:"published_date"`
 		Lists           []struct {
