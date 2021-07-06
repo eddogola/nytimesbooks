@@ -3,9 +3,11 @@ package books
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"reflect"
 	"testing"
 )
 
@@ -48,7 +50,7 @@ func TestGet(t *testing.T) {
 		},
 	}
 	c := NewClient("apikey", WithHTTPClient(mc))
-	resp, err := c.Get(context.Background(), "someplace.com")
+	resp, err := c.get(context.Background(), "someplace.com")
 	if err != nil {
 		t.Errorf("Got unexpected error %v", err)
 	}
@@ -119,4 +121,36 @@ func TestMakeLink(t *testing.T) {
 		})
 	}
 
+}
+
+func TestGetBestSellersList(t *testing.T) {
+	jsonData := `{"status": "OK",
+				  "copyright": "Copyright (c) 2019 The New York Times Company.  All Rights Reserved.",
+				  "num_results": 1,
+				  "last_modified": "2016-03-11T13:09:01-05:00"
+				}`
+
+	// setup mock http client
+	mc := &MockClient{
+		func(r *http.Request) (*http.Response, error) {
+			body := ioutil.NopCloser(bytes.NewReader([]byte(jsonData)))
+			
+			return &http.Response{Body: body}, nil
+		},
+	}
+
+	c := NewClient("apikey", WithHTTPClient(mc))
+	got, err := c.GetBestSellersList(nil)
+	if err != nil {
+		t.Errorf("unexpected error: %v", err)
+	}
+	var want List
+	err = json.Unmarshal([]byte(jsonData), &want)
+	if err != nil {
+		t.Errorf("unexpected error: %v", err)
+	}
+
+	if !reflect.DeepEqual(got, &want) {
+		t.Errorf("got %v want %v", got, want)
+	}
 }
