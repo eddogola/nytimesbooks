@@ -1,5 +1,7 @@
 package books
 
+// List defines the structure of the response gotten on 
+// requesting best sellers list
 type List struct {
 	Status       string `json:"status"`
 	Copyright    string `json:"copyright"`
@@ -41,6 +43,8 @@ type List struct {
 	} `json:"results"`
 }
 
+// ListByDate defines the structure of the response gotten on 
+// requesting best sellers list by date
 type ListByDate struct {
 	Status       string `json:"status"`
 	Copyright    string `json:"copyright"`
@@ -84,6 +88,8 @@ type ListByDate struct {
 	} `json:"results"`
 }
 
+// ListHistory defines the structure of the response gotten on 
+// requesting best sellers list history
 type ListHistory struct {
 	Status     string `json:"status"`
 	Copyright  string `json:"copyright"`
@@ -123,6 +129,8 @@ type ListHistory struct {
 	} `json:"results"`
 }
 
+// Names defines the structure of the response gotten on 
+// requesting best sellers list names
 type Names struct {
 	Status     string `json:"status"`
 	Copyright  string `json:"copyright"`
@@ -132,11 +140,13 @@ type Names struct {
 		DisplayName         string `json:"display_name"`
 		ListNameEncoded     string `json:"list_name_encoded"`
 		OldestPublishedDate string `json:"oldest_published_date"`
-		NewestPublishedDate string `json:"oldest_published_date"`
+		NewestPublishedDate string `json:"newest_published_date"`
 		Updated             string `json:"updated"`
 	} `json:"results"`
 }
 
+// Overview defines the structure of the response gotten on 
+// requesting an overview: top 5 books for all best sellers lists
 type Overview struct {
 	Status     string `json:"status"`
 	Copyright  string `json:"copyright"`
@@ -169,6 +179,8 @@ type Overview struct {
 	} `json:"results"`
 }
 
+// Reviews defines the structure of the response gotten on 
+// requesting book reviews
 type Reviews struct {
 	Status     string `json:"status"`
 	Copyright  string `json:"copyright"`
