@@ -8,18 +8,23 @@ import (
 	"net/url"
 )
 
+// Doer interface defines the Do function
 type Doer interface {
 	Do(*http.Request) (*http.Response, error)
 }
 
+// Client wraps the whole API
 type Client struct {
 	base       string
 	apiKey     string
 	HTTPClient Doer
 }
 
+// OptionFunc defines the function used to alter client in the constructor
 type OptionFunc func(*Client)
 
+// NewClient constructs a Client taking in an api key
+// and optional functions to modify the client
 func NewClient(apiKey string, options ...OptionFunc) *Client {
 	c := &Client{
 		base:       "https://api.nytimes.com/svc/books/v3",
@@ -34,6 +39,8 @@ func NewClient(apiKey string, options ...OptionFunc) *Client {
 	return c
 }
 
+// WithHTTPClient modifies a Client's default HTTPClient
+// with the Doer provided
 func WithHTTPClient(doer Doer) OptionFunc {
 	return func(c *Client) {
 		c.HTTPClient = doer
@@ -54,6 +61,7 @@ func (c *Client) get(ctx context.Context, url string) (*http.Response, error) {
 	return resp, err
 }
 
+// QueryParam is a type that carries a map of query parameters
 type QueryParam map[string]string
 
 func (qp QueryParam) String() string {
