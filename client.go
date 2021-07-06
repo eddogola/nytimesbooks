@@ -147,3 +147,23 @@ func (c *Client) GetBestSellersListHistory(qp QueryParam) (*ListHistory, error) 
 	return &hist, err
 }
 
+// GetBestSellersListNames Gets Best Sellers list names.
+func (c *Client) GetBestSellersListNames() (*Names, error) {
+	URL, err := c.makeLink(HistoryEndpoint, nil)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := c.get(context.Background(), URL)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	var names Names
+	err = json.NewDecoder(resp.Body).Decode(&names)
+	if err != nil {
+		return nil, err
+	}
+
+	return &names, err
+}
