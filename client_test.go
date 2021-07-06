@@ -177,7 +177,35 @@ func TestGetBestSellersListByDate(t *testing.T) {
 	if err != nil {
 		t.Errorf("unexpected error: %v", err)
 	}
-	fmt.Print(got.Results.Books[0].AmazonProductURL)
+
+	if !reflect.DeepEqual(got, &want) {
+		t.Errorf("got %v want %v", got, want)
+	}
+}
+
+func TestGetBestSellersListHistory(t *testing.T) {
+	jsonData := `{  "status": "OK",  "copyright": "Copyright (c) 2019 The New York Times Company.  All Rights Reserved.",  "num_results": 28970,  "results": [    {      "title": "#GIRLBOSS",      "description": "An online fashion retailer traces her path to success.",      "contributor": "by Sophia Amoruso",      "author": "Sophia Amoruso",      "contributor_note": "",      "price": 0,      "age_group": "",      "publisher": "Portfolio/Penguin/Putnam",      "isbns": [        {          "isbn10": "039916927X",          "isbn13": "9780399169274"        }      ],      "ranks_history": [        {          "primary_isbn10": "1591847931",          "primary_isbn13": "9781591847939",          "rank": 8,          "list_name": "Business Books",          "display_name": "Business",          "published_date": "2016-03-13",          "bestsellers_date": "2016-02-27",          "weeks_on_list": 0,          "ranks_last_week": null,          "asterisk": 0,          "dagger": 0        }      ],      "reviews": [        {          "book_review_link": "",          "first_chapter_link": "",          "sunday_review_link": "",          "article_chapter_link": ""        }      ]    }  ]}`
+
+	// setup mock http client
+	mc := &MockClient{
+		func(r *http.Request) (*http.Response, error) {
+			body := ioutil.NopCloser(bytes.NewReader([]byte(jsonData)))
+
+			return &http.Response{Body: body}, nil
+		},
+	}
+
+	c := NewClient("apikey", WithHTTPClient(mc))
+	got, err := c.GetBestSellersListHistory(nil)
+	if err != nil {
+		t.Errorf("unexpected error: %v", err)
+	}
+	var want ListHistory
+	err = json.Unmarshal([]byte(jsonData), &want)
+	if err != nil {
+		t.Errorf("unexpected error: %v", err)
+	}
+	
 	if !reflect.DeepEqual(got, &want) {
 		t.Errorf("got %v want %v", got, want)
 	}
