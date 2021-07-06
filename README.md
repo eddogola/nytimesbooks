@@ -2,6 +2,8 @@
 
 Wrapper around the [New York Times Books API](https://developer.nytimes.com/docs/books-product/1/overview).
 
+[![Go](https://github.com/eddogola/nytimesbooks/actions/workflows/go.yml/badge.svg)](https://github.com/eddogola/nytimesbooks/actions/workflows/go.yml)
+
 ## Installing
 
 ```bash
