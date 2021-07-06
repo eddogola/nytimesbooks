@@ -76,3 +76,47 @@ func TestQueryParam(t *testing.T) {
 		t.Errorf("got %v, want %v", got, want)
 	}
 }
+
+func TestMakeLink(t *testing.T) {
+	c := NewClient("apikey")
+
+	tests := []struct {
+		name       string
+		endpoint   string
+		queryParam QueryParam
+		want       string
+	}{
+		{
+			name:       "no query parameters",
+			endpoint:   ListsEndpoint,
+			queryParam: nil,
+			want:       c.base + ListsEndpoint + "?api-key=apikey",
+		},
+		{
+			name:       "two query parameters",
+			endpoint:   ListsEndpoint,
+			queryParam: QueryParam{"list": "hardcover-fiction", "offset": "40"},
+			want:       c.base + ListsEndpoint + "?api-key=apikey&list=hardcover-fiction&offset=40",
+		},
+		{
+			name:       "two query parameters + endpoint with placeholders",
+			endpoint:   fmt.Sprintf(ListsByDateEndpoint, "2021-07-06", "hardcover-fiction"),
+			queryParam: QueryParam{"list": "hardcover-fiction", "offset": "40"},
+			want:       c.base + "/lists/2021-07-06/hardcover-fiction.json" + "?api-key=apikey&list=hardcover-fiction&offset=40",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := c.makeLink(tt.endpoint, tt.queryParam)
+			if err != nil {
+				t.Errorf("unexpected error: %v", err)
+			}
+
+			if got != tt.want {
+				t.Errorf("got %v, want %v", got, tt.want)
+			}
+		})
+	}
+
+}
